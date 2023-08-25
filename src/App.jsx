@@ -6,7 +6,7 @@ import Copyright from './Copyright';
 
 import ButtonAppBar from './ButtonAppBar';
 import UseWidth from './UseWidth';
-import WebCamera from './WebCamera';
+import ImageAcquistion from './ImageAcquistion';
 
 export default function App() {
 
@@ -16,8 +16,8 @@ export default function App() {
       <Container maxWidth="sm">
         <Box sx={{ my: 4 }}>
           <UseWidth/>
-          <Info text={'仮想通貨を獲得するには○○アカウントの登録が必要です'} />
-          <WebCamera/>
+          <Info text={'写真を撮影すると、何が写っているか判定します'} />
+          <ImageAcquistion/>
           <Copyright />
         </Box>
       </Container>

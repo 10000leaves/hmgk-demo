@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import Webcam from "react-webcam";
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -7,7 +7,6 @@ import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-converter";
 import "@tensorflow/tfjs-backend-webgl";
 
-import Webcam from "react-webcam";
 import Detect  from './Detect ';
 
 const videoConstraints = {
@@ -16,7 +15,7 @@ const videoConstraints = {
   facingMode: "user"
 };
 
-export default function WebCamera() {
+export default function ImageAcquistion() {
   const [isCaptureEnable, setCaptureEnable] = useState(false);
   const webcamRef = useRef(null);
   const [url, setUrl] = useState(null);
@@ -32,7 +31,7 @@ export default function WebCamera() {
       {isCaptureEnable || (
         <Button onClick={() => setCaptureEnable(true)}>撮影開始</Button>
       )}
-      {isCaptureEnable && (
+      {isCaptureEnable && !url && (
         <>
           <Button onClick={() => setCaptureEnable(false)}>撮影中止</Button>
           <Webcam
@@ -48,15 +47,8 @@ export default function WebCamera() {
       )}
       {url && (
         <>
-          <Detect img={url} />
-          <Button
-            onClick={() => {
-              setUrl(null);
-            }}
-          >
-            歯磨きスタート
-          </Button>
           <img src={url} alt="Screenshot" />
+          <Detect img={url} />
           <Button
             onClick={() => {
               setUrl(null);
