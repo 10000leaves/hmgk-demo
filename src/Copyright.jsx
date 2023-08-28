@@ -7,7 +7,7 @@ export default function Copyright() {
     <Typography variant="body2" color="text.secondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://www.biprogy-ken.com/">
-      BIPROGY研究会 関東2G
+      2023年度 BIPROGY研究会 関東2G
       </Link>{' '}
       {new Date().getFullYear()}.
     </Typography>

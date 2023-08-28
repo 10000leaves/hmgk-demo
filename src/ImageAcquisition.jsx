@@ -2,14 +2,12 @@ import React, { useRef, useState, useCallback } from "react";
 import Webcam from "react-webcam";
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import LoadingButton from '@mui/lab/LoadingButton';
+
 import Detect from './Detect';
 
-import "@tensorflow/tfjs-core";
-import "@tensorflow/tfjs-converter";
-import "@tensorflow/tfjs-backend-webgl";
-
 const videoConstraints = {
-  width: 720,
+  width: '100%',
   height: 360,
   facingMode: "user",
 };
@@ -18,6 +16,11 @@ export default function ImageAcquisition() {
   const webcamRef = useRef(null);
   const [url, setUrl] = useState(null);
   const [isCaptureEnabled, setCaptureEnabled] = useState(false);
+  const [isLoading, setLoading] = useState(false); // ローディング状態
+
+  const stopLoading = () => {
+    setLoading(false);
+  };
 
   const startCapture = () => {
     setCaptureEnabled(true);
@@ -31,34 +34,44 @@ export default function ImageAcquisition() {
   const handleCapture = useCallback(() => {
     const imageSrc = webcamRef.current?.getScreenshot();
     if (imageSrc) {
+      setLoading(true);
       setUrl(imageSrc);
     }
   }, []);
 
   return (
-    <Box textAlign="center">
+    <Box textAlign="center" sx={{ my: 4 }}>
       {!isCaptureEnabled ? (
-        <Button onClick={startCapture}>撮影開始</Button>
+        <Button variant="contained" onClick={startCapture}>撮影開始</Button>
       ) : !url && (
         <>
-          <Button onClick={stopCapture}>撮影中止</Button>
-          <Webcam
-            audio={false}
-            width={540}
-            height={360}
-            ref={webcamRef}
-            screenshotFormat="image/jpeg"
-            videoConstraints={videoConstraints}
-          />
-          <Button onClick={handleCapture}>撮影</Button>
+          <Button variant="contained" onClick={stopCapture}>撮影中止</Button>
+          <Box sx={{ my: 4 }}>
+            <Webcam
+              audio={false}
+              width={'100%'}
+              height={'100%'}
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              videoConstraints={videoConstraints}
+            />
+          </Box>
+          <Button variant="contained" onClick={handleCapture}>撮影</Button>
         </>
       )}
 
       {url && (
         <>
           <img src={url} alt="Screenshot" />
-          <Detect img={url} />
-          <Button onClick={() => setUrl(null)}>再撮影</Button>
+          <Detect img={url} stopLoading={stopLoading} />
+          <LoadingButton
+            variant="contained"
+            onClick={() => setUrl(null)}
+            loading={isLoading}
+            disabled={isLoading}
+          >
+            再撮影
+          </LoadingButton>
         </>
       )}
     </Box>

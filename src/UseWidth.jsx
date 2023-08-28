@@ -21,7 +21,7 @@ function useWidth() {
 
 function MyComponent() {
   const width = useWidth();
-  return <span>{`width: ${width}`}</span>;
+  return <span>{`今の width は: ${width}`}</span>;
 }
 
 const theme = createTheme();

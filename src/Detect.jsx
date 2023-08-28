@@ -4,12 +4,12 @@ import * as tf from '@tensorflow/tfjs';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import Box from '@mui/material/Box';
 
 export default function Detect(props) {
   const [imageRecognized, setImageRecognized] = useState(false);
   const [predictionsList, setPredictionsList] = useState([]);
-  const [isLoading, setLoading] = useState(true); // ローディング状態
-  const { img } = props;
+  const { img, stopLoading } = props;
 
   useEffect(() => {
     async function checkImageRecognition() {
@@ -20,8 +20,6 @@ export default function Detect(props) {
       const imgElement = new Image();
       imgElement.src = img;
 
-      console.log(img)
-
       imgElement.onload = async () => {
         // 画像の前処理
         const imgTensor = tf.browser.fromPixels(imgElement);
@@ -29,11 +27,9 @@ export default function Detect(props) {
         // 予測を行う
         const predictions = await model.classify(imgTensor);
 
-        console.log(predictions)
-
         setImageRecognized(predictions.length > 0);
         setPredictionsList(predictions);
-        setLoading(false); // ローディング終了
+        stopLoading(); // ローディング終了
 
         imgTensor.dispose(); // メモリリークを防ぐためにテンソルを解放
       };
@@ -42,25 +38,21 @@ export default function Detect(props) {
     checkImageRecognition();
   }, [img]);
 
-  if (isLoading) {
-    return <Typography>Loading...</Typography>;
-  }
-
   return (
-    <div>
+    <Box sx={{ my: 4 }}>
       <Typography>
         {imageRecognized ? '画像を認識できました' : '画像を認識できませんでした'}
       </Typography>
       {imageRecognized && (
-        <div>
+        <>
           <Typography>判定結果:</Typography>
           <List>
             {predictionsList.map((prediction, index) => (
               <ListItem key={index}>{`${prediction.className} (評価: ${prediction.probability.toFixed(4)})`}</ListItem>
             ))}
           </List>
-        </div>
+        </>
       )}
-    </div>
+    </Box>
   );
 }
