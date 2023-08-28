@@ -20,13 +20,17 @@ export default function Detect(props) {
       const imgElement = new Image();
       imgElement.src = img;
 
+      console.log(img)
+
       imgElement.onload = async () => {
         // 画像の前処理
         const imgTensor = tf.browser.fromPixels(imgElement);
-        const normalizedImg = tf.div(imgTensor, 255.0); // ピクセル値を正規化
 
         // 予測を行う
-        const predictions = await model.classify(normalizedImg);
+        const predictions = await model.classify(imgTensor);
+
+        console.log(predictions)
+
         setImageRecognized(predictions.length > 0);
         setPredictionsList(predictions);
         setLoading(false); // ローディング終了
