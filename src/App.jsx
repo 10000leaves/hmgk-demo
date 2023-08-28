@@ -6,18 +6,18 @@ import Copyright from './Copyright';
 
 import ButtonAppBar from './ButtonAppBar';
 import UseWidth from './UseWidth';
-import ImageAcquistion from './ImageAcquistion';
+import ImageAcquisition from './ImageAcquisition';
 
 export default function App() {
 
   return (
     <>
       <ButtonAppBar/>
-      <Container maxWidth="sm">
+      <Container fixed>
         <Box sx={{ my: 4 }}>
           <UseWidth/>
           <Info text={'写真を撮影すると、何が写っているか判定します'} />
-          <ImageAcquistion/>
+          <ImageAcquisition/>
           <Copyright />
         </Box>
       </Container>
