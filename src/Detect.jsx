@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 export default function Detect(props) {
   const [imageRecognized, setImageRecognized] = useState(false);
   const [predictionsList, setPredictionsList] = useState([]);
-  const { img, stopLoading } = props;
+  const { img, isLoading, stopLoading } = props;
 
   useEffect(() => {
     async function checkImageRecognition() {
@@ -33,22 +33,27 @@ export default function Detect(props) {
 
         // メモリリークを防ぐためにテンソルを解放
         imgTensor.dispose();
+
+        // 画像認識完了後にローディングを終了
+        stopLoading();
       };
     }
 
     // 画像認識を実行
     checkImageRecognition();
 
-    // ローディングを終了
-    stopLoading();
   }, [img]);
 
   return (
     <Box sx={{ my: 4 }}>
-      <Typography>
-        {imageRecognized ? '画像を認識できました' : '画像を認識できませんでした'}
-      </Typography>
-      {imageRecognized && (
+      {/* ローディングが false のときに表示 */}
+      {!isLoading && !imageRecognized && (
+        <Typography>
+          画像を認識できませんでした
+        </Typography>
+      )}
+      {/* ローディングが false かつ 画像認識が成功した場合 */}
+      {!isLoading && imageRecognized && (
         <>
           <Typography>判定結果:</Typography>
           <List>

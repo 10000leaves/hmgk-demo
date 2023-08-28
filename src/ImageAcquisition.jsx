@@ -66,7 +66,7 @@ export default function ImageAcquisition() {
         <>
           {/* 撮影された画像を表示し、画像解析コンポーネントを呼び出す */}
           <img src={url} alt="Screenshot" />
-          <Detect img={url} stopLoading={stopLoading} />
+          <Detect img={url} isLoading={isLoading} stopLoading={stopLoading} />
           <LoadingButton
             variant="contained"
             onClick={() => setUrl(null)}
