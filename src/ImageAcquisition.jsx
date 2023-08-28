@@ -34,17 +34,19 @@ export default function ImageAcquisition() {
   const handleCapture = useCallback(() => {
     const imageSrc = webcamRef.current?.getScreenshot();
     if (imageSrc) {
-      setLoading(true);
-      setUrl(imageSrc);
+      setLoading(true); // ローディングを開始
+      setUrl(imageSrc); // 撮影された画像のURLを設定
     }
   }, []);
 
   return (
     <Box textAlign="center" sx={{ my: 4 }}>
+      {/* 撮影が有効でない場合、撮影開始ボタンを表示 */}
       {!isCaptureEnabled ? (
         <Button variant="contained" onClick={startCapture}>撮影開始</Button>
       ) : !url && (
         <>
+          {/* 撮影中止ボタンとWebカメラ表示を表示 */}
           <Button variant="contained" onClick={stopCapture}>撮影中止</Button>
           <Box sx={{ my: 4 }}>
             <Webcam
@@ -62,13 +64,14 @@ export default function ImageAcquisition() {
 
       {url && (
         <>
+          {/* 撮影された画像を表示し、画像解析コンポーネントを呼び出す */}
           <img src={url} alt="Screenshot" />
           <Detect img={url} stopLoading={stopLoading} />
           <LoadingButton
             variant="contained"
             onClick={() => setUrl(null)}
-            loading={isLoading}
-            disabled={isLoading}
+            loading={isLoading} // ボタンのローディング状態を設定
+            disabled={isLoading} // ローディング中はボタンを無効化
           >
             再撮影
           </LoadingButton>

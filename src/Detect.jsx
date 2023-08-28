@@ -13,7 +13,7 @@ export default function Detect(props) {
 
   useEffect(() => {
     async function checkImageRecognition() {
-      // モデルのロード
+      // MobileNetモデルをロード
       const model = await mobilenet.load();
 
       // 画像要素を生成して img を設定
@@ -24,18 +24,23 @@ export default function Detect(props) {
         // 画像の前処理
         const imgTensor = tf.browser.fromPixels(imgElement);
 
-        // 予測を行う
+        // モデルを使って画像の予測を行う
         const predictions = await model.classify(imgTensor);
 
+        // 予測結果をステートに設定
         setImageRecognized(predictions.length > 0);
         setPredictionsList(predictions);
-        stopLoading(); // ローディング終了
 
-        imgTensor.dispose(); // メモリリークを防ぐためにテンソルを解放
+        // メモリリークを防ぐためにテンソルを解放
+        imgTensor.dispose();
       };
     }
 
+    // 画像認識を実行
     checkImageRecognition();
+
+    // ローディングを終了
+    stopLoading();
   }, [img]);
 
   return (
