@@ -7,8 +7,8 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Detect from './Detect';
 
 const videoConstraints = {
-  width: '100%',
-  height: 360,
+  width: 300,
+  height: 300,
   facingMode: "user",
 };
 
