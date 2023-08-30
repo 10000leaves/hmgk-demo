@@ -9,7 +9,6 @@ import Detect from './Detect';
 const videoConstraints = {
   width: 300,
   height: 300,
-  facingMode: "environment",
 };
 
 export default function ImageAcquisition() {
